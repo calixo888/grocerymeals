@@ -17,12 +17,15 @@ def products(request):
         return HttpResponseRedirect("/products/?q=" + product_name)
 
     # Overwriting products if searched
+    query = None
     if request.GET.get("q"):
-        product_name = request.GET.get("q")
-        products = models.Product.objects.raw(f"SELECT * FROM grocerymeals_app_product WHERE title LIKE '%{product_name}%'")
+        query = request.GET.get("q")
+        products = models.Product.objects.raw(f"SELECT * FROM grocerymeals_app_product WHERE title LIKE '%{query}%'")
 
     return render(request, "grocerymeals_app/products.html", context={
         "products": products,
+        "query": query,
+
     })
 
 

@@ -1,3 +1,15 @@
+/* SEARCH BAR STYLES */
 .search-bar {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  margin: 50px 75px;
+}
 
+.search-bar-input {
+  padding: 15px;
+  font-size: 25px;
+}
+
+.search-bar-submit {
+  font-size: 25px;
 }

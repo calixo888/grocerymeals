@@ -3,21 +3,26 @@
 <title>GroceryMeals - Products</title>
 <link rel="stylesheet" href="{% static 'grocerymeals_app/products.css' %}">
 {% block body %}
-  <h1>Seasonal Products</h1>
+  <h1 class="header-primary">Seasonal Products</h1>
   <form enctype="multipart/form-data" class="product-search-form" method="post">
     {% csrf_token %}
-    <input type="text" name="product" placeholder="Product Name">
-    <input type="submit" value="Search">
+    <div class="search-bar">
+      {% if query %}
+        <input class="search-bar-input" type="text" name="product" value="{{query}}" placeholder="Product Name">
+      {% else %}
+        <input class="search-bar-input" type="text" name="product" placeholder="Product Name">
+      {% endif %}
+      <input class="search-bar-submit" type="submit" value="Search">
+    </div>
   </form>
   <div class="container">
     <div class="products-grid">
       {% for product in products %}
         <div class="product">
           <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} image">
-          <a href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">
-            <h3>{{product.title}}</h3>
-          </a>
+          <h3>{{product.title}}</h3>
           <h5>{{product.price}}</h5>
+          <a class="btn btn-secondary" href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">Find Recipes</a>
         </div>
       {% endfor %}
     </div>

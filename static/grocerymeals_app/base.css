@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* NAVBAR STYLES */
+.nav-logo {
+  height: 60px;
+}
+
+.fixed-top.scrolled {
+  background-color: rgb(60,60,60) !important;
+  transition: all 200ms linear;
+}
+
+.scrolled * {
+  color: white !important;
+}
+
+.navbar-fixed-top.scrolled .nav-link {
+  color:#555;
+}
+
+/* HEADERS */
+.header-primary {
+  font-weight: bold;
+  font-size: 50px;
+  text-align: center;
+}
