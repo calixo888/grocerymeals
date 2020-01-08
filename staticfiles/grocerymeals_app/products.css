@@ -1,0 +1,14 @@
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 30px;
+}
+
+.product {
+  background-color: lightblue;
+  padding: 30px;
+}
+
+.product-image {
+  width: 100%;
+}
