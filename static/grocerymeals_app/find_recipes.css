@@ -1,0 +1,14 @@
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 30px;
+}
+
+.recipe {
+  padding: 30px;
+  background-color: lightblue;
+}
+
+.recipe-image {
+  width: 100%;
+}

@@ -1,0 +1,20 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+<title>GroceryMeals - Products</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/products.css' %}">
+{% block body %}
+  <h1>Seasonal Products</h1>
+  <div class="container">
+    <div class="products-grid">
+      {% for product in products %}
+        <div class="product">
+          <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} image">
+          <a href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">
+            <h3>{{product.title}}</h3>
+          </a>
+          <h5>{{product.price}}</h5>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

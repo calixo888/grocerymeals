@@ -1,0 +1,19 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+<title>GroceryMeals - Find Recipes</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/find_recipes.css' %}">
+{% block body %}
+  <h1>Recipes with {{ingredients}}</h1>
+  <div class="container">
+    <div class="recipe-grid">
+      {% for recipe in recipes %}
+        <div class="recipe">
+          <img class="recipe-image" src="{{recipe.image_url}}" alt="{{recipe.title}} Image">
+          <a href="/recipes/recipe/?id={{recipe.id}}">
+            <h3>{{recipe.title}}</h3>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

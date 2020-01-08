@@ -1,0 +1,13 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+<title>GroceryMeals - Recipes</title>
+{% block body %}
+  <h1>Recipes</h1>
+  <form class="ingredient-search-form" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <div class="search-bar">
+      <input type="text" placeholder="Ingredients (separated by spaces)" name="ingredients">
+      <input type="submit" value="Find Recipe">
+    </div>
+  </form>
+{% endblock %}
