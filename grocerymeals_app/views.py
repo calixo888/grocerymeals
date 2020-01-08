@@ -11,6 +11,16 @@ def products(request):
     # Grabbing all products from database
     products = models.Product.objects.all()
 
+    # Redirecting to products if searched
+    if request.method == "POST":
+        product_name = request.POST.get("product")
+        return HttpResponseRedirect("/products/?q=" + product_name)
+
+    # Overwriting products if searched
+    if request.GET.get("q"):
+        product_name = request.GET.get("q")
+        products = models.Product.objects.raw(f"SELECT * FROM grocerymeals_app_product WHERE title LIKE '%{product_name}%'")
+
     return render(request, "grocerymeals_app/products.html", context={
         "products": products,
     })

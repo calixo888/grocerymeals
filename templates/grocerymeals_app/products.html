@@ -4,6 +4,11 @@
 <link rel="stylesheet" href="{% static 'grocerymeals_app/products.css' %}">
 {% block body %}
   <h1>Seasonal Products</h1>
+  <form enctype="multipart/form-data" class="product-search-form" method="post">
+    {% csrf_token %}
+    <input type="text" name="product" placeholder="Product Name">
+    <input type="submit" value="Search">
+  </form>
   <div class="container">
     <div class="products-grid">
       {% for product in products %}
