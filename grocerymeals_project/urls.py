@@ -31,7 +31,6 @@ import time
 import threading
 from selenium import webdriver
 import re
-import numpy as np
 from grocerymeals_app import models
 import requests
 from bs4 import BeautifulSoup
