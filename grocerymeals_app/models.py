@@ -10,3 +10,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.provider + " - " + self.title
+
+
+class ShoppingListItem(models.Model):
+    user_id = models.IntegerField()
+    product_id = models.CharField(max_length=50)
+
+    def __str__(self):
+        product = Product.objects.get(id=self.product_id)
+        return product.title

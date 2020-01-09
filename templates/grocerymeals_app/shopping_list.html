@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+<title>GroceryMeals - Shopping List</title>
+{% block body %}
+  <h1 class="header-secondary">Shopping List</h1>
+  <ul>
+    {% for product in products %}
+      <li>{{product.title}}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

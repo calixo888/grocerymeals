@@ -3,11 +3,11 @@ body {
   overflow: none;
 }
 
-.contact-us-form {
+.login-form {
   width: 500px;
 }
 
-.contact-input {
+.login-input {
   background-color: transparent;
   border: 1px solid white;
   padding: 15px;
@@ -19,11 +19,11 @@ body {
   margin-bottom: 20px;
 }
 
-.contact-input::placeholder {
+.login-input::placeholder {
   color: white;
 }
 
-.contact-input:focus {
+.login-input:focus {
   outline: none;
   box-shadow: 0 2px 10px rgba(0,0,0,.15);
 }

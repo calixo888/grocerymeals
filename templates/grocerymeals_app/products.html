@@ -3,7 +3,7 @@
 <title>GroceryMeals - Products</title>
 <link rel="stylesheet" href="{% static 'grocerymeals_app/products.css' %}">
 {% block body %}
-  <h1 class="header-primary">Seasonal Products</h1>
+  <h1 class="header-secondary f-50">Seasonal Products</h1>
   <form enctype="multipart/form-data" class="product-search-form" method="post">
     {% csrf_token %}
     <div class="search-bar">
@@ -25,6 +25,7 @@
             <small>{{product.price}}</small>
           </div>
           <a class="btn btn-secondary btn-block" href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">Find Recipes</a>
+          <a class="btn btn-secondary btn-block" href="/shopping-list/add-item/?id={{product.id}}">Add to Shopping List</a>
         </div>
       {% endfor %}
     </div>

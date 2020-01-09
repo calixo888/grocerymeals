@@ -9,10 +9,10 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm navbar-light fixed-top">
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
-              <img class="nav-logo" src="{% static 'img/nav-grocerymeals.png' %}" alt="">
+              <img class="nav-logo" src="{% static 'img/nav-grocerymeals.png' %}" alt="GroceryMeals Logo">
             </a>
             <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-target">
               <span class="navbar-toggler-icon"></span>
@@ -28,9 +28,36 @@
                   <li class="nav-item">
                       <a class="nav-link" href="/products/">Products</a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item pr-3 separator-right">
                       <a class="nav-link" href="/recipes/">Recipes</a>
                   </li>
+                  {% if request.user.is_authenticated %}
+                    <li class="nav-item pl-3 prompt-item">
+                      <div class="dropdown">
+                        <!-- <button class="dropbtn">Dropdown</button> -->
+                        <span>Welcome, {{request.user.username}}</span>
+                        <div class="dropdown-content">
+                          <div class="pb-3" style="border-bottom: 1px solid rgba(0,0,0,.5);">
+                            <span class="f-20">{{request.user.first_name}} {{request.user.last_name}}</span>
+                            <span>{{request.user.email}}</span>
+                          </div>
+                          <div class="pt-3" style="border-top: 1px solid rgba(0,0,0,.5);">
+                            <a class="user-link pt-3" href="/shopping-list/">View Shopping List</a>
+                            <a class="user-link" href="/logout/">Logout</a>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a href="/shopping-list/" class="nav-link">
+                        <img class="shopping-list pl-2" src="{% static 'img/icons/list-light.png'%}" alt="Shopping List Icon">
+                      </a>
+                    </li>
+                  {% else %}
+                    <li class="nav-item pl-3 prompt-item">
+                      <a class="mr-2" href="/login/">Log in</a> <span class="mr-2">OR</span> <a href="/register/" class="btn btn-primary" style="color: white !important;">Register</a>
+                    </li>
+                  {% endif %}
               </ul>
             </div>
         </div>
@@ -54,7 +81,17 @@
       $(function () {
         $(document).scroll(function () {
       	  var $nav = $(".fixed-top");
-      	  $nav.toggleClass('scrolled', $(this).scrollTop() > $nav.height());
+      	  $nav.toggleClass('scrolled navbar-light', $(this).scrollTop() > $nav.height());
+          $nav.toggleClass('navbar-dark', $(this).scrollTop() < $nav.height())
+
+          var $separatorRight = $(".separator-right")
+          $separatorRight.toggleClass('separator-right-dark', $(this).scrollTop() > $nav.height())
+
+          var $promptItem = $('.prompt-item');
+          $promptItem.toggleClass('prompt-item-dark', $(this).scrollTop() > $nav.height())
+
+          var $shoppingList = $('.shopping-list')
+          $shoppingList.toggleClass('shopping-list-dark', $(this).scrollTop() > $nav.height())
       	});
       });
     </script>

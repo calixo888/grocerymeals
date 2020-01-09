@@ -3,12 +3,14 @@
 <title>GroceryMeals - Contact Us</title>
 <link rel="stylesheet" href="{% static 'grocerymeals_app/contact_us.css' %}">
 {% block body %}
-  <h1 class="header-primary">Contact Us</h1>
-  <form enctype="multipart/form-data" class="contact-us-form" method="post">
-    {% csrf_token %}
-    <input type="text" name="name" class="contact-input" placeholder="Name">
-    <input type="email" name="email" class="contact-input" placeholder="Email">
-    <textarea name="message" rows="6" class="contact-input" placeholder="Message"></textarea>
-    <input type="submit" value="Contact Us">
-  </form>
+  <h1 class="header-secondary f-50">Contact Us</h1>
+  <div class="text-center mt-5">
+    <form enctype="multipart/form-data" class="contact-us-form m-auto" method="post">
+      {% csrf_token %}
+      <input type="text" name="name" class="contact-input" placeholder="Name">
+      <input type="email" name="email" class="contact-input" placeholder="Email">
+      <textarea name="message" rows="6" class="contact-input" placeholder="Message"></textarea>
+      <input class="ghost-cta-button btn-block" type="submit" value="Contact Us">
+    </form>
+  </div>
 {% endblock %}

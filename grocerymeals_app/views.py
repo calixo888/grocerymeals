@@ -1,6 +1,10 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
+from django.contrib import messages
 from . import models
 import requests
 
@@ -8,6 +12,68 @@ def index(request):
     return render(request, "grocerymeals_app/index.html", context={
         "index": True,
     })
+
+
+def register(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        # Name processing
+        name_list = name.split()
+        first_name = None
+        last_name = None
+        first_name = name_list[0]
+        if len(name_list) == 1: # Name is one word (Calix)
+            pass
+        elif len(name_list) == 2: # Name two words (Calix Huang)
+            last_name = name_list[1]
+        else: # Name three words or more (Calix boi Huang)
+            last_name = " ".join(name_list[1:])
+
+        print(first_name)
+        print(last_name)
+        print(email)
+        print(username)
+        print(password)
+
+        user = User(first_name=first_name, last_name=last_name, email=email, username=username)
+        user.set_password(password)
+        user.save()
+
+        login(request, user)
+
+        return HttpResponseRedirect("/")
+
+    return render(request, "grocerymeals_app/register.html")
+
+
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+
+                return HttpResponseRedirect("/")
+            else:
+                messages.success(request, "Your account has be deactivated. Please re-register.")
+        else:
+            messages.success(request, "Invalid credentials. Please try again.")
+
+    return render(request, "grocerymeals_app/login.html")
+
+
+@login_required(login_url="/login/")
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect("/")
 
 
 def contact_us(request):
@@ -21,6 +87,17 @@ def contact_us(request):
         return HttpResponseRedirect("/")
 
     return render(request, "grocerymeals_app/contact_us.html")
+
+
+def shopping_list(request):
+    products = []
+    for item in models.ShoppingListItem.objects.filter(user_id=request.user.id):
+        product = models.Product.objects.get(id=item.product_id)
+        products.append(product)
+
+    return render(request, "grocerymeals_app/shopping_list.html", context={
+        "products": products,
+    })
 
 
 def products(request):
@@ -127,3 +204,16 @@ def recipe(request):
         "ingredients": ingredients,
         "instructions": instructions,
     })
+
+
+# POST REQUESTS
+
+def shopping_list_add_item(request):
+    id = request.GET.get("id")
+
+    product = models.Product.objects.get(id=id)
+
+    list_item = models.ShoppingListItem(user_id=request.user.id, product_id=id)
+    list_item.save()
+
+    return HttpResponseRedirect("/shopping-list/")

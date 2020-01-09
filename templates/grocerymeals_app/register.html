@@ -1,0 +1,17 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+<title>GroceryMeals - Register</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/register.css' %}">
+{% block body %}
+  <h1 class="header-secondary f-50">Register</h1>
+  <div class="text-center my-5">
+    <form enctype="multipart/form-data" class="register-form m-auto" method="post">
+      {% csrf_token %}
+      <input type="text" name="name" class="register-input" placeholder="Full Name">
+      <input type="email" name="email" class="register-input" placeholder="Email">
+      <input type="text" name="username" class="register-input" placeholder="Username">
+      <input type="password" name="password" class="register-input" placeholder="Password">
+      <input type="submit" class="ghost-cta-button btn-block" value="Login">
+    </form>
+  </div>
+{% endblock %}
