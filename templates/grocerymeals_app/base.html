@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'grocerymeals_app/base.css' %}">
     <link rel="icon" href="{% static 'img/cut-grocerymeals.png'%}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
   </head>
   <body>
     <nav class="navbar navbar-expand-sm navbar-light fixed-top">
@@ -22,6 +23,9 @@
                       <a class="nav-link" href="/">Home</a>
                   </li>
                   <li class="nav-item">
+                      <a class="nav-link" href="/contact-us/">Contact Us</a>
+                  </li>
+                  <li class="nav-item">
                       <a class="nav-link" href="/products/">Products</a>
                   </li>
                   <li class="nav-item">
@@ -31,10 +35,14 @@
             </div>
         </div>
     </nav>
-    <div class="py-5">
+    {% if not index %}
+      <div class="py-5">
+    {% endif %}
       {% block body %}
       {% endblock %}
-    </div>
+    {% if not index %}
+      </div>
+    {% endif %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"

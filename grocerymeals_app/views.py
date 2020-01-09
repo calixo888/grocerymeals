@@ -1,10 +1,26 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import EmailMessage
 from . import models
 import requests
 
 def index(request):
-    return render(request, "grocerymeals_app/index.html")
+    return render(request, "grocerymeals_app/index.html", context={
+        "index": True,
+    })
+
+
+def contact_us(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        EmailMessage("GroceryMeals - Customer Contact", "From: " + name + "\n\n" + message + "\n\nReply To: " + email, to=["calix.huang1@gmail.com"]).send()
+
+        return HttpResponseRedirect("/")
+
+    return render(request, "grocerymeals_app/contact_us.html")
 
 
 def products(request):

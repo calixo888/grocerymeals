@@ -20,9 +20,11 @@
       {% for product in products %}
         <div class="product">
           <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} image">
-          <h3>{{product.title}}</h3>
-          <h5>{{product.price}}</h5>
-          <a class="btn btn-secondary" href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">Find Recipes</a>
+          <h3 class="text-center">{{product.title}}</h3>
+          <div class="text-center mb-2">
+            <small>{{product.price}}</small>
+          </div>
+          <a class="btn btn-secondary btn-block" href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">Find Recipes</a>
         </div>
       {% endfor %}
     </div>

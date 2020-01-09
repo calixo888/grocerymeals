@@ -1,21 +1,34 @@
+{% load staticfiles %}
 {% include 'grocerymeals_app/base.html' %}
 <title>GroceryMeals - {{title}}</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/recipe.css' %}">
 {% block body %}
-  <img src="{{image_url}}" alt="{{title}} Image">
-  <h1>{{title}}</h1>
-  <h3>Ingredients</h3>
-  <ul>
-    {% for ingredient in ingredients %}
-      <li>{{ingredient.amount}} {{ingredient.metric}} {{ingredient.name}}</li>
-    {% endfor %}
-  </ul>
+  <div class="container text-center">
+    <img class="recipe-image" src="{{image_url}}" alt="{{title}} Image">
+    <h2 class="my-4">{{title}}</h2>
 
-  {% if instructions %}
-    <h3>Instructions</h3>
-    <ol>
-      {% for instruction in instructions %}
-        <li>{{instruction}}</li>
-      {% endfor %}
-    </ol>
-  {% endif %}
+    <div class="row my-5">
+      <div class="col-sm text-left">
+        <h3>Ingredients</h3>
+        <ul>
+          {% for ingredient in ingredients %}
+            <li>{{ingredient.amount}} {{ingredient.metric}} {{ingredient.name}}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-sm text-left">
+        <h3>Instructions</h3>
+        {% if instructions %}
+          <ol>
+            {% for instruction in instructions %}
+              <li>{{instruction}}</li>
+            {% endfor %}
+          </ol>
+        {% else %}
+          <small>No instructions available!</small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

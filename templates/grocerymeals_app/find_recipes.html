@@ -9,9 +9,8 @@
       {% for recipe in recipes %}
         <div class="recipe">
           <img class="recipe-image" src="{{recipe.image_url}}" alt="{{recipe.title}} Image">
-          <a href="/recipes/recipe/?id={{recipe.id}}">
-            <h3>{{recipe.title}}</h3>
-          </a>
+          <h3 class="text-center my-3">{{recipe.title}}</h3>
+          <a class="btn btn-secondary btn-block" href="/recipes/recipe/?id={{recipe.id}}">Check it out!</a>
         </div>
       {% endfor %}
     </div>

@@ -1,9 +1,98 @@
+{% load staticfiles %}
 {% include 'grocerymeals_app/base.html' %}
 <title>GroceryMeals</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/index.css' %}">
 {% block body %}
-  <div class="jumbotron">
-    <div class="container text-center">
-      <h1 class="display-1">GroceryMeals</h1>
+  <section class="header">
+    <div class="center-container text-center" style="width: 50%;">
+      <h1 class="header-secondary mb-4 f-65">A Smarter Way to Shop</h1>
+      <div class="cta-buttons">
+        <button class="ghost-cta-button" onclick="document.querySelector('.about').scrollIntoView({behavior: 'smooth'});">Learn More</button>
+        <a href="/products/" class="primary-cta-button">Try it out!</a>
+      </div>
     </div>
-  </div>
+  </section>
+  <section class="about">
+    <h1 class="header-primary f-50">About GroceryMeals</h1>
+    <div class="text-center">
+      <p class="about-main-description m-auto w-50">
+        GroceryMeals is an online platform that gathers the best grocery prices and matches them with recipes you can make at home!
+      </p>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="text-center">
+          <img src="{% static 'img/icons/dollar.png' %}" class="about-card-icon">
+        </div>
+        <h3 class="header-primary">Best Prices</h3>
+        <p class="about-card-description">
+          GroceryMeals automatically gets the best grocery prices from your favorite stores and displays them for your picking!
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="text-center">
+          <img src="{% static 'img/icons/recipe.png' %}" class="about-card-icon">
+        </div>
+        <h3 class="header-primary">Amazing recipes</h3>
+        <p class="about-card-description">
+          GroceryMeals can match amazing and delicious recipes to whatever groceries that you would like to purchase. We can also provide you with recipes to make that include multiple specified ingredients.
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="text-center">
+          <img src="{% static 'img/icons/like.png' %}" class="about-card-icon">
+        </div>
+        <h3 class="header-primary">Completely Free!</h3>
+        <p class="about-card-description">
+          We have made GroceryMeals completely free, because finding the best deals that you can cook at home shouldn't come with any extra fees!
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="stores">
+    <h1 class="header-primary f-50">Stores we use</h1>
+    <div class="container py-5">
+      <div class="stores-grid">
+        <img src="{% static 'img/stores/sprouts.png' %}" alt="Sprouts Logo" class="store-image">
+        <img src="{% static 'img/stores/safeway.png' %}" alt="Sprouts Logo" class="store-image">
+      </div>
+    </div>
+  </section>
+  <section class="footer">
+    <div class="text-center">
+      <img src="{% static 'img/grocerymeals.png' %}" alt="GroceryMeals Logo">
+    </div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="contact-container">
+          <p class="footer-header">Contact</p>
+          <div class="contact-link">
+            <img src="{% static 'img/icons/arroba.png' %}" alt="Email Icon" class="contact-icon">
+            <span class="contact-info">calix.huang1@gmail.com</span>
+          </div>
+          <div class="contact-link">
+            <img src="{% static 'img/icons/telephone.png' %}" alt="Email Icon" class="contact-icon">
+            <span class="contact-info">(925)-332-6127</span>
+          </div>
+        </div>
+        <div class="extra-container">
+          <p class="footer-header">Important Resources</p>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <a href="#">Terms of Service</a>
+            </li>
+            <li class="footer-link">
+              <a href="#">Privacy Policy</a>
+            </li>
+          </ul>
+        </div>
+        <div class="about-container">
+          <p class="footer-header">About GroceryMeals</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Dui
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
