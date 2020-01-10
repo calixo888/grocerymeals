@@ -274,6 +274,14 @@ def product(request, product_id):
     })
 
 
+def terms_of_service(request):
+    return render(request, "grocerymeals_app/terms_of_service.html")
+
+
+def privacy_policy(request):
+    return render(request, "grocerymeals_app/privacy_policy.html")
+
+
 # POST REQUESTS
 @login_required(login_url="/login/")
 def shopping_list_add_item(request):

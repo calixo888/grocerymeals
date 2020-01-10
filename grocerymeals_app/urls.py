@@ -15,4 +15,6 @@ urlpatterns = [
     url("^recipes/find-recipes/$", views.find_recipes, name="find_recipes"),
     url("^recipes/recipe/$", views.recipe, name="recipe"),
     url("^products/product/(?P<product_id>[^/]+)/$", views.product, name="product"),
+    url("^terms-of-service/$", views.terms_of_service, name="terms_of_service"),
+    url("^privacy-policy/$", views.privacy_policy, name="privacy_policy"),
 ]

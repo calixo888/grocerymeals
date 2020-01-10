@@ -70,8 +70,12 @@
   color: white;
 }
 
-.footer-link {
+.footer-item {
   list-style: none;
+}
+
+.footer-link:hover {
+  color: #eee;
 }
 
 .contact-link {
