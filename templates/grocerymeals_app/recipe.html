@@ -3,31 +3,35 @@
 <title>GroceryMeals - {{title}}</title>
 <link rel="stylesheet" href="{% static 'grocerymeals_app/recipe.css' %}">
 {% block body %}
-  <div class="container text-center">
-    <img class="recipe-image" src="{{image_url}}" alt="{{title}} Image">
-    <h2 class="my-4">{{title}}</h2>
-
-    <div class="row my-5">
-      <div class="col-sm text-left">
-        <h3>Ingredients</h3>
-        <ul>
-          {% for ingredient in ingredients %}
-            <li>{{ingredient.amount}} {{ingredient.metric}} {{ingredient.name}}</li>
-          {% endfor %}
-        </ul>
+  <div class="container">
+    <div class="recipe-container text-white">
+      <div class="left">
+        <img class="recipe-image" src="{{image_url}}" alt="{{title}} Image">
+        <h2 class="text-center my-4">{{title}}</h2>
       </div>
 
-      <div class="col-sm text-left">
-        <h3>Instructions</h3>
-        {% if instructions %}
-          <ol>
-            {% for instruction in instructions %}
-              <li>{{instruction}}</li>
+      <div class="right">
+        <div class="ingredients-container px-5">
+          <h3 class="header-secondary">Ingredients</h3>
+          <ul>
+            {% for ingredient in ingredients %}
+              <li class="my-2">{{ingredient.amount}} {{ingredient.metric}} {{ingredient.name}}</li>
             {% endfor %}
-          </ol>
-        {% else %}
-          <small>No instructions available!</small>
-        {% endif %}
+          </ul>
+        </div>
+
+        <div class="instructions-container my-5 px-5">
+          <h3 class="header-secondary">Instructions</h3>
+          {% if instructions %}
+            <ol>
+              {% for instruction in instructions %}
+                <li class="my-2">{{instruction}}</li>
+              {% endfor %}
+            </ol>
+          {% else %}
+            <small>No instructions available!</small>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

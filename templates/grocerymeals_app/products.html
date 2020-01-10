@@ -24,6 +24,7 @@
           <div class="text-center mb-2">
             <small>{{product.price}}</small>
           </div>
+          <a href="/products/product/{{product.id}}" class="btn btn-secondary btn-block">View Product</a>
           <a class="btn btn-secondary btn-block" href="/recipes/find-recipes/?ingredients={{product.formatted_title}}">Find Recipes</a>
           <a class="btn btn-secondary btn-block" href="/shopping-list/add-item/?id={{product.id}}">Add to Shopping List</a>
         </div>

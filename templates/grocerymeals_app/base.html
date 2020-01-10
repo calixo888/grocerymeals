@@ -42,15 +42,16 @@
                             <span>{{request.user.email}}</span>
                           </div>
                           <div class="pt-3" style="border-top: 1px solid rgba(0,0,0,.5);">
-                            <a class="user-link pt-3" href="/shopping-list/">View Shopping List</a>
+                            <a class="user-link pt-3" href="/shopping-list/">View Shopping List ({{number_of_shopping_list_items}})</a>
                             <a class="user-link" href="/logout/">Logout</a>
                           </div>
                         </div>
                       </div>
                     </li>
                     <li class="nav-item">
-                      <a href="/shopping-list/" class="nav-link">
+                      <a href="/shopping-list/" class="nav-link shopping-list-nav-item">
                         <img class="shopping-list pl-2" src="{% static 'img/icons/list-light.png'%}" alt="Shopping List Icon">
+                        <span class="item-number-badge">{{number_of_shopping_list_items}}</span>
                       </a>
                     </li>
                   {% else %}

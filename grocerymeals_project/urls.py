@@ -141,7 +141,7 @@ def job():
         formatted_titles.append(formatted_name)
 
     for info_bunch in zip(image_links_list, titles_list, formatted_titles, price_list):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider=info_bunch[2], price=info_bunch[3])
+        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Sprouts", formatted_title=info_bunch[2], price=info_bunch[3])
         print("added")
 
 schedule.every(1).minutes.do(job)

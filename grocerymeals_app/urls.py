@@ -9,8 +9,10 @@ urlpatterns = [
     url("^contact-us/$", views.contact_us, name="contact_us"),
     url("^shopping-list/$", views.shopping_list, name="shopping_list"),
     url("^shopping-list/add-item/$", views.shopping_list_add_item, name="shopping_list_add_item"),
+    url("^shopping-list/delete-item/$", views.shopping_list_delete_item, name="shopping_list_delete_item"),
     url("^products/$", views.products, name="products"),
     url("^recipes/$", views.recipes, name="recipes"),
     url("^recipes/find-recipes/$", views.find_recipes, name="find_recipes"),
     url("^recipes/recipe/$", views.recipe, name="recipe"),
+    url("^products/product/(?P<product_id>[^/]+)/$", views.product, name="product"),
 ]

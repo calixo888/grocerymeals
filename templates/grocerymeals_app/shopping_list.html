@@ -1,11 +1,20 @@
 {% load staticfiles %}
 {% include 'grocerymeals_app/base.html' %}
 <title>GroceryMeals - Shopping List</title>
+<link rel="stylesheet" href="{% static 'grocerymeals_app/shopping_list.css' %}">
 {% block body %}
   <h1 class="header-secondary">Shopping List</h1>
-  <ul>
-    {% for product in products %}
-      <li>{{product.title}}</li>
-    {% endfor %}
-  </ul>
+  <div class="container my-5">
+    <div class="shopping-list-container">
+      {% for product in products %}
+        <div class="product">
+          <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} Image">
+          <span>Provider: {{product.provider}}</span>
+          <a href="/products/product/{{product.id}}">{{product.formatted_title}}</a>
+          <span>{{product.price}}</span>
+          <a class="x" href="/shopping-list/delete-item/?id={{product.id}}">&times;</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}
