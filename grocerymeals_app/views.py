@@ -45,6 +45,8 @@ def register(request):
 
         login(request, user)
 
+        messages.success(request, "Account successfully registered!")
+
         return HttpResponseRedirect("/")
 
     return render(request, "grocerymeals_app/register.html")
@@ -61,6 +63,8 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
 
+                messages.success(request, "Successfully logged in!")
+
                 return HttpResponseRedirect("/")
             else:
                 messages.success(request, "Your account has be deactivated. Please re-register.")
@@ -73,6 +77,7 @@ def user_login(request):
 @login_required(login_url="/login/")
 def user_logout(request):
     logout(request)
+    messages.success(request, "Successfully logged out!")
     return HttpResponseRedirect("/")
 
 
@@ -83,6 +88,8 @@ def contact_us(request):
         message = request.POST.get("message")
 
         EmailMessage("GroceryMeals - Customer Contact", "From: " + name + "\n\n" + message + "\n\nReply To: " + email, to=["calix.huang1@gmail.com"]).send()
+
+        messages.success(request, "Email sent! We should reply within 1-2 business days.")
 
         return HttpResponseRedirect("/")
 
@@ -293,9 +300,12 @@ def shopping_list_add_item(request):
         list_item = models.ShoppingListItem(user_id=request.user.id, product_id=id)
         list_item.save()
 
+        messages.success(request, "Product successfully added to your shopping list!")
+
         return HttpResponseRedirect("/shopping-list/")
 
     else:
+        messages.success(request, "Product already inside your shopping list.")
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -304,5 +314,7 @@ def shopping_list_delete_item(request):
     id = request.GET.get("id")
 
     models.ShoppingListItem.objects.get(product_id=id).delete()
+
+    messages.success(request, "Item successfully removed from your shopping list!")
 
     return HttpResponseRedirect("/shopping-list/")

@@ -3,7 +3,9 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'grocerymeals_app/queries.css' %}">
     <link rel="stylesheet" href="{% static 'grocerymeals_app/base.css' %}">
     <link rel="icon" href="{% static 'img/cut-grocerymeals.png'%}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
@@ -74,6 +76,16 @@
             </div>
         </div>
     </nav>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-info alert-dismissible mb-0 text-left fixed-top" style="z-index: 1040;">
+          <button class="close" type="button" data-dismiss="alert">
+              <span>&times;</span>
+          </button>
+          <strong>{{ message|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
     {% if not index %}
       <div class="py-5">
     {% endif %}

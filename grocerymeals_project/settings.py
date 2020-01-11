@@ -23,8 +23,8 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = '#gfs+g#-d*48r6mnolcojkn@s6tjfi=pvo%a06vs5*6)^(pil8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'grocerymeals_app',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -72,14 +73,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'grocerymeals_project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', 'grocerymeals'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASS', 'iloveCalix8'),
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -116,16 +117,30 @@ USE_L10N = True
 
 USE_TZ = True
 
+# AWS Settings
+development = False
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+if development:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+    STATIC_URL = "/static/"
+else:
+    AWS_DEFAULT_ACL = None
+    AWS_ACCESS_KEY_ID = 'AKIAT2SKEKLO7J5HFM6W'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'grocerymeals-assets'
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_LOCATION = 'static'
 
-STATIC_DIR = os.path.join(BASE_DIR, "static")
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    STATIC_DIR,
-]
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+    STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Media Files
 MEDIA_DIR = os.path.join(BASE_DIR, "media")

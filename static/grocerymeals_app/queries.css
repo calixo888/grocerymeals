@@ -1,0 +1,12 @@
+/* RECIPES PAGE */
+@media (max-width: 1000px) {
+  .search-bar {
+    width: 90%;
+    margin: 50px auto !important;
+  }
+
+  .search-bar-submit {
+    font-size: 15px !important;
+    content: "Find";
+  }
+}
