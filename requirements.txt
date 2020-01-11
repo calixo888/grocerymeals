@@ -8,3 +8,4 @@ schedule==0.6.0
 twilio==6.31.0
 django-storages==1.8
 boto3==1.9.180
+psycopg2==2.8.4
