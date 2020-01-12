@@ -48,6 +48,39 @@
 }
 
 
+/* SOCIAL MEDIA */
+.social-media {
+  padding: 30px;
+}
+
+.social-media-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  justify-items: center;
+  align-items: center;
+}
+
+.social-media-icons-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+  grid-gap: 10px;
+}
+
+.social-media-icon {
+  width: 100%;
+  transition: all .5s;
+  transition-timing-function: cubic-bezier(.49,.04,.32,.97);
+}
+
+.social-media-icon:hover {
+  transform: rotate(360deg);
+}
+
+.social-media-link:hover {
+  text-decoration: none;
+}
+
+
 /* FOOTER */
 .footer {
   background-color: #333;

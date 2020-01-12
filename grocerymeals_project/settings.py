@@ -138,7 +138,7 @@ USE_L10N = True
 USE_TZ = True
 
 # AWS Settings
-development = False
+development = True
 
 if development:
     STATICFILES_DIRS = [

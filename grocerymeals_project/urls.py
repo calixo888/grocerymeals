@@ -36,22 +36,19 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
 import re
+import os
 from grocerymeals_app import models
 import requests
 from bs4 import BeautifulSoup
 from twilio.rest import Client
+from django.core.mail import EmailMessage
 
 account_sid = 'ACfd9dc8dfdc0bae80dfe05ba0e75af37f'
 auth_token = '7209ab86358baa99b15c920ee17a3b86'
 client = Client(account_sid, auth_token)
 
-def send_text(message):
-    message = client.messages \
-        .create(
-             body=message,
-             from_='+1 925 701 8067',
-             to='9253326127'
-         )
+def send_email(message):
+    EmailMessage("GroceryMeals Scraping Update", message, to=["calix.huang1@gmail.com"]).send()
 
 def check_exists_by_class(class_name):
     try:
@@ -65,14 +62,14 @@ def job():
     models.Product.objects.all().delete()
 
     # Scraping and storing products from grocers
-    send_text("Starting GroceryMeals scraping process...")
+    send_email("Starting GroceryMeals scraping process...")
     sprouts()
     safeway()
     albertsons()
     smart_and_final()
     whole_foods()
 
-    sent_text("GroceryMeals scraping process complete.")
+    sent_email("GroceryMeals scraping process complete.")
 
 def sprouts():
     def image_links(soup):
@@ -113,230 +110,234 @@ def sprouts():
 
         return price_list
 
-    driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
-    url = "https://shop.sprouts.com/shop/categories/2"
-    html_list = []
+    products = ["produce", "meat"]
 
-    driver.get(url)
-    time.sleep(5)
+    for product in products:
+        for page_number in range(1, 7):
+            driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+            url = f"https://shop.sprouts.com/search?search_term={product}&page={page_number}"
+            html_list = []
 
-    html = driver.page_source
-    html_list.append(html)
+            driver.get(url)
+            time.sleep(5)
 
-    url += "?page=2"
+            html = driver.page_source
+            html_list.append(html)
 
-    driver.get(url)
-    time.sleep(5)
+            driver.close()
 
-    html = driver.page_source
-    html_list.append(html)
+            image_links_list = []
+            titles_list = []
+            price_list = []
 
-    driver.close()
+            for html in html_list:
+                soup = BeautifulSoup(html, "lxml")
+                products = soup.find_all("div", attrs={"class": "product-cell"})
 
-    image_links_list = []
-    titles_list = []
-    price_list = []
+                image_links_list.append(image_links(soup))
+                titles_list.append(titles(soup))
+                price_list.append(prices(soup))
 
-    for html in html_list:
-        soup = BeautifulSoup(html, "lxml")
-        products = soup.find_all("div", attrs={"class": "product-cell"})
+            image_links_list = [j for sub in image_links_list for j in sub]
+            titles_list = [j for sub in titles_list for j in sub]
+            price_list = [j for sub in price_list for j in sub]
 
-        image_links_list.append(image_links(soup))
-        titles_list.append(titles(soup))
-        price_list.append(prices(soup))
+            # Formatting names
+            formatted_titles = []
+            for name in titles_list:
+                name_list = name.split()
 
-    image_links_list = [j for sub in image_links_list for j in sub]
-    titles_list = [j for sub in titles_list for j in sub]
-    price_list = [j for sub in price_list for j in sub]
+                index_counter = 0
+                while True:
+                    if len(name_list) == index_counter:
+                        break
 
-    # Formatting names
-    formatted_titles = []
-    for name in titles_list:
-        name_list = name.split()
+                    word = name_list[index_counter]
 
-        index_counter = 0
-        while True:
-            if len(name_list) == index_counter:
-                break
+                    if word.endswith(","):
+                        name_list[index_counter] = word[:-1]
+                        index_counter += 1
+                        break
 
-            word = name_list[index_counter]
+                    if word.startswith("("):
+                        break
 
-            if word.endswith(","):
-                name_list[index_counter] = word[:-1]
-                index_counter += 1
-                break
+                    index_counter += 1
 
-            if word.startswith("("):
-                break
+                formatted_name = " ".join(name_list[:index_counter])
+                formatted_titles.append(formatted_name)
 
-            index_counter += 1
-
-        formatted_name = " ".join(name_list[:index_counter])
-        formatted_titles.append(formatted_name)
-
-    for info_bunch in zip(image_links_list, titles_list, formatted_titles, price_list):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Sprouts", formatted_title=info_bunch[2], price=info_bunch[3])
+            for info_bunch in zip(image_links_list, titles_list, formatted_titles, price_list):
+                models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Sprouts", formatted_title=info_bunch[2], price=info_bunch[3])
 
 
 def safeway():
-    html = None
-    attempts = 0
-    driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
+    queries = ["fruits%20and%20vegetables", "meat"]
 
-    driver.get("https://www.safeway.com/shop/search-results.html?q=fruits%20and%20vegetables")
+    for query in queries:
+        html = None
+        attempts = 0
 
-    time.sleep(2)
+        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
 
-    # Closing cookie consent
-    try:
-        driver.find_element_by_id("cookieConsentClose").click()
-    except:
-        pass
+        driver.get(f"https://www.safeway.com/shop/search-results.html?q={query}")
 
-    while True:
-        if attempts == 3:
-            html = driver.page_source
-            break
+        time.sleep(2)
 
+        # Closing cookie consent
         try:
-            load_btn = driver.find_element_by_class_name("bloom-load-button")
-
-            actions = ActionChains(driver)
-            actions.move_to_element(load_btn).perform()
-
-            load_btn.click()
-
-            attempts = 0
-
-            time.sleep(2)
+            driver.find_element_by_id("cookieConsentClose").click()
         except:
-            attempts += 1
+            pass
 
-    driver.close()
+        while True:
+            if attempts == 3:
+                html = driver.page_source
+                break
+
+            try:
+                load_btn = driver.find_element_by_class_name("bloom-load-button")
+
+                actions = ActionChains(driver)
+                actions.move_to_element(load_btn).perform()
+
+                load_btn.click()
+
+                attempts = 0
+
+                time.sleep(2)
+            except:
+                attempts += 1
+
+        driver.close()
 
 
-    # Parsing
-    soup = BeautifulSoup(html, "lxml")
+        # Parsing
+        soup = BeautifulSoup(html, "lxml")
 
-    products = soup.find_all("div", attrs={"class": "product-grid"})
+        products = soup.find_all("div", attrs={"class": "product-grid"})
 
-    images = []
-    titles = []
-    quantities = []
-    prices = []
+        images = []
+        titles = []
+        quantities = []
+        prices = []
 
-    for product in products:
-        try:
-            image = product.find("img", attrs={"ab-lazy"})["src"]
-            images.append(image) # Product Image
-        except:
-            images.append("{% static 'img/no-image.png' %}")
+        for product in products:
+            try:
+                image = product.find("img", attrs={"ab-lazy"})["src"]
+                images.append(image) # Product Image
+            except:
+                images.append("{% static 'img/no-image.png' %}")
 
-        # Product Title
-        title = product.find("a", attrs={"class": "product-title"}).get_text()
-        titles.append(title)
+            # Product Title
+            title = product.find("a", attrs={"class": "product-title"}).get_text()
+            titles.append(title)
 
-        # Product Quantity
-        quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
-        quantities.append(quantity)
+            # Product Quantity
+            quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
+            quantities.append(quantity)
 
-        # Product Price
-        str_price = product.find("span", attrs={"class": "product-price"}).get_text()
-        price = float(str_price.split("$")[1])
-        prices.append(price)
+            # Product Price
+            str_price = product.find("span", attrs={"class": "product-price"}).get_text()
+            price = float(str_price.split("$")[1])
+            prices.append(price)
 
-    for info_bunch in zip(images, titles, titles, prices):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Safeway", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Safeway", formatted_title=info_bunch[2], price=info_bunch[3])
 
 
 def albertsons():
-    html = None
-    attempts = 0
-    driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
+    queries = ["fruits%20and%20vegetables", "meat"]
 
-    driver.get("https://www.albertsons.com/shop/search-results.html?q=fruits%20and%20vegetables")
+    for query in queries:
+        html = None
+        attempts = 0
+        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
 
-    # Closing cookie consent
-    try:
-        driver.find_element_by_id("cookieConsentClose").click()
-    except:
-        pass
+        driver.get(f"https://www.albertsons.com/shop/search-results.html?q={query}")
 
-    while True:
-        if attempts == 3:
-            html = driver.page_source
-            break
-
+        # Closing cookie consent
         try:
-            load_btn = driver.find_element_by_class_name("bloom-load-button")
-
-            actions = ActionChains(driver)
-            actions.move_to_element(load_btn).perform()
-
-            load_btn.click()
-
-            attempts = 0
-
-            time.sleep(2)
+            driver.find_element_by_id("cookieConsentClose").click()
         except:
-            attempts += 1
+            pass
 
-    driver.close()
+        while True:
+            if attempts == 3:
+                html = driver.page_source
+                break
+
+            try:
+                load_btn = driver.find_element_by_class_name("bloom-load-button")
+
+                actions = ActionChains(driver)
+                actions.move_to_element(load_btn).perform()
+
+                load_btn.click()
+
+                attempts = 0
+
+                time.sleep(2)
+            except:
+                attempts += 1
+
+        driver.close()
 
 
-    # Parsing
-    soup = BeautifulSoup(html, "lxml")
+        # Parsing
+        soup = BeautifulSoup(html, "lxml")
 
-    products = soup.find_all("div", attrs={"class": "product-grid"})
+        products = soup.find_all("div", attrs={"class": "product-grid"})
 
-    images = []
-    titles = []
-    quantities = []
-    prices = []
+        images = []
+        titles = []
+        quantities = []
+        prices = []
 
-    for product in products:
-        try:
-            image = product.find("img", attrs={"ab-lazy"})["src"]
-            images.append(image) # Product Image
-        except:
-            images.append("{% static 'img/no-image.png' %}")
+        for product in products:
+            try:
+                image = product.find("img", attrs={"ab-lazy"})["src"]
+                images.append(image) # Product Image
+            except:
+                images.append("{% static 'img/no-image.png' %}")
 
-        # Product Title
-        title = product.find("a", attrs={"class": "product-title"}).get_text()
-        titles.append(title)
+            # Product Title
+            title = product.find("a", attrs={"class": "product-title"}).get_text()
+            titles.append(title)
 
-        # Product Quantity
-        quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
-        quantities.append(quantity)
+            # Product Quantity
+            quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
+            quantities.append(quantity)
 
-        # Product Price
-        str_price = product.find("span", attrs={"class": "product-price"}).get_text()
-        price = float(str_price.split("$")[1])
-        prices.append(price)
+            # Product Price
+            str_price = product.find("span", attrs={"class": "product-price"}).get_text()
+            price = float(str_price.split("$")[1])
+            prices.append(price)
 
-    for info_bunch in zip(images, titles, titles, prices):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Albertsons", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Albertsons", formatted_title=info_bunch[2], price=info_bunch[3])
 
 
 def smart_and_final():
-    html = None
-    attempts = 0
-    driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
-    page_number = 1
-    product = "fruits"
-    base_url = f"https://www.smartandfinal.com/shop/?query={product}&page={page_number}&pagesize=96&apply_user_tags=1"
+    products = ["fruits", "vegetables", "meat"]
 
-    images = []
-    titles = []
-    prices = []
+    for product in products:
+        html = None
+        attempts = 0
+        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        page_number = 1
+        base_url = f"https://www.smartandfinal.com/shop/?query={product}&page={page_number}&pagesize=96&apply_user_tags=1"
 
-    # Selecting closest store
-    driver.get(base_url)
-    time.sleep(5)
-    set_as_closest_store_btn = driver.find_element_by_class_name("set-my-closest-store")
-    set_as_closest_store_btn.click()
+        images = []
+        titles = []
+        prices = []
 
-    for i in range(2):
+        # Selecting closest store
+        driver.get(base_url)
+        time.sleep(5)
+        set_as_closest_store_btn = driver.find_element_by_class_name("set-my-closest-store")
+        set_as_closest_store_btn.click()
+
         while True:
             url = f"https://www.smartandfinal.com/shop/?query={product}&page={page_number}&pagesize=96&apply_user_tags=1"
             driver.get(url)
@@ -363,85 +364,84 @@ def smart_and_final():
 
             page_number += 1
 
-        product = "vegetables"
-        page_number = 1
+        driver.close()
 
-    driver.close()
+        images = [j for sub in images for j in sub]
+        titles = [j for sub in titles for j in sub]
+        prices = [j for sub in prices for j in sub]
 
-    images = [j for sub in images for j in sub]
-    titles = [j for sub in titles for j in sub]
-    prices = [j for sub in prices for j in sub]
-
-    for info_bunch in zip(images, titles, titles, prices):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Smart and Final", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Smart and Final", formatted_title=info_bunch[2], price=info_bunch[3])
 
 
 def whole_foods():
-    images = []
-    titles = []
-    prices = []
-
-    html = None
-    driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
-    page_number = 1
-    categories = ["produce"]
-    url = f"https://products.wholefoodsmarket.com/search?sort=relevance&store=10126&category={categories[0]}"
-
-    driver.get(url)
-
-    # Selecting a store
-    driver.find_element_by_class_name("Dropdown-Root--55pLk").click()
-    time.sleep(1)
-    driver.find_element_by_class_name("Input-InputField--KUzM1").send_keys("94506")
-    time.sleep(1)
-    driver.find_element_by_class_name("StoreSelector-Option--mQyct").click()
+    categories = ["produce", "meat"]
 
     for category in categories:
+        images = []
+        titles = []
+        prices = []
+
+        html = None
+        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        page_number = 1
         url = f"https://products.wholefoodsmarket.com/search?sort=relevance&store=10126&category={category}"
 
-        while True:
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            prev_html = driver.page_source
-            time.sleep(2)
+        driver.get(url)
 
-            post_html = driver.page_source
+        # Selecting a store
+        driver.find_element_by_class_name("Dropdown-Root--55pLk").click()
+        time.sleep(1)
+        driver.find_element_by_class_name("Input-InputField--KUzM1").send_keys("94506")
+        time.sleep(1)
+        driver.find_element_by_class_name("StoreSelector-Option--mQyct").click()
 
-            if prev_html == post_html:
-                html = driver.page_source
-                break
+        for category in categories:
+            url = f"https://products.wholefoodsmarket.com/search?sort=relevance&store=10126&category={category}"
 
-        soup = BeautifulSoup(html, "lxml")
+            while True:
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                prev_html = driver.page_source
+                time.sleep(2)
 
-        products = soup.find_all("a", attrs={"class": "ProductCard-Root--3g5WI"})
+                post_html = driver.page_source
 
-        temp_images = []
-        for image in soup.find_all("div", attrs={"class": "LazyImage-Image--1HP-y"}):
-            try:
-                temp_images.append(image["style"])
-            except:
-                temp_images.append("{% static 'img/no-image.png' %}")
+                if prev_html == post_html:
+                    html = driver.page_source
+                    break
 
-        temp_titles = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Name--1o2Gg"})]
-        temp_prices = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Price--1uInW"}) if not i.has_attr("data-dashed")]
+            soup = BeautifulSoup(html, "lxml")
 
-        images.append(temp_images)
-        titles.append(temp_titles)
-        prices.append(temp_prices)
+            products = soup.find_all("a", attrs={"class": "ProductCard-Root--3g5WI"})
 
-    driver.close()
+            temp_images = []
+            for image in soup.find_all("div", attrs={"class": "LazyImage-Image--1HP-y"}):
+                try:
+                    temp_images.append(image["style"])
+                except:
+                    temp_images.append("{% static 'img/no-image.png' %}")
 
-    images = [j for sub in images for j in sub]
-    titles = [j for sub in titles for j in sub]
-    prices = [j for sub in prices for j in sub]
+            temp_titles = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Name--1o2Gg"})]
+            temp_prices = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Price--1uInW"}) if not i.has_attr("data-dashed")]
 
-    for info_bunch in zip(images, titles, titles, prices):
-        models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Whole Foods", formatted_title=info_bunch[2], price=info_bunch[3])
+            images.append(temp_images)
+            titles.append(temp_titles)
+            prices.append(temp_prices)
 
-schedule.every(1440).minutes.do(job)
+        driver.close()
+
+        images = [j for sub in images for j in sub]
+        titles = [j for sub in titles for j in sub]
+        prices = [j for sub in prices for j in sub]
+
+        for info_bunch in zip(images, titles, titles, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Whole Foods", formatted_title=info_bunch[2], price=info_bunch[3])
+
+schedule.every(1).minutes.do(job)
 
 def interval():
     while True:
         schedule.run_pending()
         time.sleep(1)
 
-# threading.Thread(target=interval).start()
+threading.Thread(target=interval).start()
