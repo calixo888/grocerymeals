@@ -24,8 +24,8 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = '#gfs+g#-d*48r6mnolcojkn@s6tjfi=pvo%a06vs5*6)^(pil8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -173,6 +173,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'calix.huang1@gmail.com'
-EMAIL_HOST_PASSWORD = 'iloveC@lix8'
+EMAIL_HOST_PASSWORD = 'iloveCalix8'
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = "Calix Huang <calix.huang1@gmail.com>"
