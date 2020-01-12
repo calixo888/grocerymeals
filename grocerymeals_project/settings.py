@@ -24,8 +24,8 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 SECRET_KEY = '#gfs+g#-d*48r6mnolcojkn@s6tjfi=pvo%a06vs5*6)^(pil8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -77,11 +77,17 @@ WSGI_APPLICATION = 'grocerymeals_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'grocerymeals_database',
-        'USER': 'grocerymeals_user',
-        'PASSWORD': 'iloveCalix8',
+        'NAME': os.environ.get('DB_NAME', 'grocerymeals_database'),
+        'USER': os.environ.get('DB_USER', 'grocerymeals_user'),
+        'PASSWORD': os.environ.get('DB_PASS', 'iloveCalix8'),
         'HOST': 'localhost',
-        'PORT': '6122',
+        'PORT': '5432',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'grocerymeals_database',
+        # 'USER': 'grocerymeals_user',
+        # 'PASSWORD': 'iloveCalix8',
+        # 'HOST': 'localhost',
+        # 'PORT': '6122',
     }
 }
 
