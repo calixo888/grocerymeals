@@ -76,11 +76,11 @@ WSGI_APPLICATION = 'grocerymeals_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DB_NAME', 'grocerymeals'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
+        'NAME': os.environ.get('DB_NAME', 'grocerymeals_database'),
+        'USER': os.environ.get('DB_USER', 'grocerymeals_user'),
         'PASSWORD': os.environ.get('DB_PASS', 'iloveCalix8'),
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
