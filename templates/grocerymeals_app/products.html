@@ -20,7 +20,11 @@
       {% for product in products %}
         <div class="product">
           <img src="{% static 'img/stores/' %}{{product.provider}}.png" alt="{{product.provider}} Logo" class="store-icon">
-          <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} image">
+          {% if product.image_url == "Image Not Available" %}
+            <img class="product-image" src="{% static 'img/stores/image-not-available.png' %}" alt="{{product.title}} image">
+          {% else %}
+            <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} image" class="store-logo">
+          {% endif %}
           <h3 class="text-center">{{product.title}}</h3>
           <div class="text-center mb-2">
             <small>{{product.price}}</small>

@@ -19,10 +19,12 @@ from django.conf.urls import include, url
 from django.conf import settings
 from django.views.static import serve
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('', include('grocerymeals_app.urls')),
+    url('^', include('django.contrib.auth.urls')),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -69,7 +71,7 @@ def job():
     smart_and_final()
     whole_foods()
 
-    sent_email("GroceryMeals scraping process complete.")
+    send_email("GroceryMeals scraping process complete.")
 
 def sprouts():
     def image_links(soup):
@@ -110,11 +112,11 @@ def sprouts():
 
         return price_list
 
-    products = ["produce", "meat"]
+    products = ["produce", "meat", "seafood"]
 
     for product in products:
         for page_number in range(1, 7):
-            driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+            driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
             url = f"https://shop.sprouts.com/search?search_term={product}&page={page_number}"
             html_list = []
 
@@ -172,13 +174,13 @@ def sprouts():
 
 
 def safeway():
-    queries = ["fruits%20and%20vegetables", "meat"]
+    queries = ["fruits%20and%20vegetables", "meat", "seafood"]
 
     for query in queries:
         html = None
         attempts = 0
 
-        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
 
         driver.get(f"https://www.safeway.com/shop/search-results.html?q={query}")
 
@@ -227,7 +229,7 @@ def safeway():
                 image = product.find("img", attrs={"ab-lazy"})["src"]
                 images.append(image) # Product Image
             except:
-                images.append("{% static 'img/no-image.png' %}")
+                images.append("Image Not Available")
 
             # Product Title
             title = product.find("a", attrs={"class": "product-title"}).get_text()
@@ -247,12 +249,12 @@ def safeway():
 
 
 def albertsons():
-    queries = ["fruits%20and%20vegetables", "meat"]
+    queries = ["fruits%20and%20vegetables", "meat", "seafood"]
 
     for query in queries:
         html = None
         attempts = 0
-        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
 
         driver.get(f"https://www.albertsons.com/shop/search-results.html?q={query}")
 
@@ -299,7 +301,7 @@ def albertsons():
                 image = product.find("img", attrs={"ab-lazy"})["src"]
                 images.append(image) # Product Image
             except:
-                images.append("{% static 'img/no-image.png' %}")
+                images.append("Image Not Available")
 
             # Product Title
             title = product.find("a", attrs={"class": "product-title"}).get_text()
@@ -319,12 +321,12 @@ def albertsons():
 
 
 def smart_and_final():
-    products = ["fruits", "vegetables", "meat"]
+    products = ["fruits", "vegetables", "meat", "seafood"]
 
     for product in products:
         html = None
         attempts = 0
-        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
         page_number = 1
         base_url = f"https://www.smartandfinal.com/shop/?query={product}&page={page_number}&pagesize=96&apply_user_tags=1"
 
@@ -375,7 +377,7 @@ def smart_and_final():
 
 
 def whole_foods():
-    categories = ["produce", "meat"]
+    categories = ["produce", "meat", "seafood"]
 
     for category in categories:
         images = []
@@ -383,7 +385,7 @@ def whole_foods():
         prices = []
 
         html = None
-        driver = webdriver.Chrome(executable_path=os.path.abspath("../static/chromedriver"))
+        driver = webdriver.Chrome("/Users/calixhuang/Documents/chromedriver")
         page_number = 1
         url = f"https://products.wholefoodsmarket.com/search?sort=relevance&store=10126&category={category}"
 
@@ -419,7 +421,7 @@ def whole_foods():
                 try:
                     temp_images.append(image["style"])
                 except:
-                    temp_images.append("{% static 'img/no-image.png' %}")
+                    temp_images.append("Image Not Available")
 
             temp_titles = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Name--1o2Gg"})]
             temp_prices = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Price--1uInW"}) if not i.has_attr("data-dashed")]
@@ -444,4 +446,4 @@ def interval():
         schedule.run_pending()
         time.sleep(1)
 
-threading.Thread(target=interval).start()
+# threading.Thread(target=interval).start()

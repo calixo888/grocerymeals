@@ -9,7 +9,8 @@
 .product {
   position: relative;
   background-color: white;
-  border: 3px solid lightgreen;
+  box-shadow: 0 3px 5px rgba(0,0,0,.3);
+  border-radius: 4px;
   padding: 30px;
 }
 
@@ -22,17 +23,33 @@
   display: grid;
   grid-template-columns: 75% 25%;
   margin: 50px 75px;
+  border-radius: 4px;
+}
+
+.search-bar *:focus, *:active {
+  outline: none;
 }
 
 .search-bar-input {
-  padding: 15px;
+  padding: 15px 20px;
   font-size: 25px;
+  border: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 
 .search-bar-submit {
   font-size: 25px;
   color: white;
   background-color: lightgreen;
+  border: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  transition: all .2s;
+}
+
+.search-bar-submit:hover {
+  background-color: var(--color-primary);
 }
 
 .store-icon {

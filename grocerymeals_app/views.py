@@ -110,7 +110,7 @@ def shopping_list(request):
 
 def products(request):
     # Grabbing all products from database
-    products = models.Product.objects.all()
+    products = models.Product.objects.raw("SELECT * FROM grocerymeals_app_product LIMIT 50")
 
     # Redirecting to products if searched
     if request.method == "POST":
@@ -121,7 +121,7 @@ def products(request):
     query = None
     if request.GET.get("q"):
         query = request.GET.get("q")
-        products = models.Product.objects.raw(f"SELECT * FROM grocerymeals_app_product WHERE title LIKE '%{query}%'")
+        products = models.Product.objects.raw(f"SELECT * FROM grocerymeals_app_product WHERE title LIKE '%{query}%' LIMIT 50")
 
     return render(request, "grocerymeals_app/products.html", context={
         "products": products,

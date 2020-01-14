@@ -4,12 +4,15 @@
 <link rel="stylesheet" href="{% static 'grocerymeals_app/login.css' %}">
 {% block body %}
   <h1 class="header-secondary f-50">Login</h1>
-  <div class="text-center my-5">
+  <div class="text-center my-5 text-white">
     <form enctype="multipart/form-data" class="login-form m-auto" method="post">
       {% csrf_token %}
       <input type="text" name="username" class="login-input" placeholder="Username">
       <input type="password" name="password" class="login-input" placeholder="Password">
       <input type="submit" class="ghost-cta-button btn-block" value="Login">
     </form>
+    <small>Don't have an account? <a href="/register/">Register Here</a></small>
+    <br>
+    <small>Forgot your password? <a href="/password_reset/">Reset Password</a></small>
   </div>
 {% endblock %}
