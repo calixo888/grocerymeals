@@ -50,7 +50,7 @@ auth_token = '7209ab86358baa99b15c920ee17a3b86'
 client = Client(account_sid, auth_token)
 
 def send_email(message):
-    EmailMessage("GroceryMeals Scraping Update", message, to=["calix.huang1@gmail.com"]).send()
+    EmailMessage("GroceryMeals Scraping Update", message, to=["grocerymeals.team@gmail.com"]).send()
 
 def check_exists_by_class(class_name):
     try:

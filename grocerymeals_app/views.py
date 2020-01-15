@@ -87,7 +87,7 @@ def contact_us(request):
         email = request.POST.get("email")
         message = request.POST.get("message")
 
-        EmailMessage("GroceryMeals - Customer Contact", "From: " + name + "\n\n" + message + "\n\nReply To: " + email, to=["calix.huang1@gmail.com"]).send()
+        EmailMessage("GroceryMeals - Customer Contact", "From: " + name + "\n\n" + message + "\n\nReply To: " + email, to=["grocerymeals.team@gmail.com"]).send()
 
         messages.success(request, "Email sent! We should reply within 1-2 business days.")
 
