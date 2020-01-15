@@ -130,6 +130,7 @@ def sprouts():
 
             image_links_list = []
             titles_list = []
+            links_list = []
             price_list = []
 
             for html in html_list:
@@ -142,6 +143,7 @@ def sprouts():
 
             image_links_list = [j for sub in image_links_list for j in sub]
             titles_list = [j for sub in titles_list for j in sub]
+            links_list = ["Original Link Not Available" for i in range(len(titles_list))]
             price_list = [j for sub in price_list for j in sub]
 
             # Formatting names
@@ -169,8 +171,8 @@ def sprouts():
                 formatted_name = " ".join(name_list[:index_counter])
                 formatted_titles.append(formatted_name)
 
-            for info_bunch in zip(image_links_list, titles_list, formatted_titles, price_list):
-                models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Sprouts", formatted_title=info_bunch[2], price=info_bunch[3])
+            for info_bunch in zip(image_links_list, titles_list, formatted_titles, links_list, price_list):
+                models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Sprouts", formatted_title=info_bunch[2], original_link=info_bunch[3], price=info_bunch[4])
 
 
 def safeway():
@@ -222,6 +224,7 @@ def safeway():
         images = []
         titles = []
         quantities = []
+        links = []
         prices = []
 
         for product in products:
@@ -235,6 +238,10 @@ def safeway():
             title = product.find("a", attrs={"class": "product-title"}).get_text()
             titles.append(title)
 
+            # Product Link
+            link = "https://www.safeway.com" + product.find("a", attrs={"class": "product-title"})["href"]
+            links.append(link)
+
             # Product Quantity
             quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
             quantities.append(quantity)
@@ -244,8 +251,8 @@ def safeway():
             price = float(str_price.split("$")[1])
             prices.append(price)
 
-        for info_bunch in zip(images, titles, titles, prices):
-            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Safeway", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, links, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Safeway", formatted_title=info_bunch[2], original_link=info_bunch[3], price=info_bunch[4])
 
 
 def albertsons():
@@ -294,6 +301,7 @@ def albertsons():
         images = []
         titles = []
         quantities = []
+        links = []
         prices = []
 
         for product in products:
@@ -307,6 +315,10 @@ def albertsons():
             title = product.find("a", attrs={"class": "product-title"}).get_text()
             titles.append(title)
 
+            # Product Link
+            link = "https://www.albertsons.com" + product.find("a", attrs={"class": "product-title"})["href"]
+            links.append(link)
+
             # Product Quantity
             quantity = product.find("span", attrs={"class": "product-price-qty"}).get_text()
             quantities.append(quantity)
@@ -316,8 +328,8 @@ def albertsons():
             price = float(str_price.split("$")[1])
             prices.append(price)
 
-        for info_bunch in zip(images, titles, titles, prices):
-            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Albertsons", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, links, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Albertsons", formatted_title=info_bunch[2], original_link=info_bunch[3], price=info_bunch[4])
 
 
 def smart_and_final():
@@ -332,6 +344,7 @@ def smart_and_final():
 
         images = []
         titles = []
+        links = []
         prices = []
 
         # Selecting closest store
@@ -353,8 +366,12 @@ def smart_and_final():
             soup = BeautifulSoup(driver.page_source, "lxml")
 
             # Images
-            temp_images = [i["src"] if i.has_attr("src") else "Not available" for i in soup.find_all("img", attrs={"class": "item-image"})]
+            temp_images = [i["src"] if i.has_attr("src") else "Image Not Available" for i in soup.find_all("img", attrs={"class": "item-image"})]
             images.append(temp_images)
+
+            # Links
+            temp_links = ["https://www.smartandfinal.com" + i["href"] for i in soup.find_all("a", attrs={"class": "product-image-link"})]
+            links.append(temp_links)
 
             # Titles
             temp_titles = [i.get_text() for i in soup.find_all("span", attrs={"class": "product-name"})]
@@ -370,10 +387,11 @@ def smart_and_final():
 
         images = [j for sub in images for j in sub]
         titles = [j for sub in titles for j in sub]
+        links = [j for sub in links for j in sub]
         prices = [j for sub in prices for j in sub]
 
-        for info_bunch in zip(images, titles, titles, prices):
-            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Smart and Final", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, links, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Smart and Final", formatted_title=info_bunch[2], original_link=info_bunch[3], price=info_bunch[4])
 
 
 def whole_foods():
@@ -382,6 +400,7 @@ def whole_foods():
     for category in categories:
         images = []
         titles = []
+        links = []
         prices = []
 
         html = None
@@ -425,19 +444,22 @@ def whole_foods():
 
             temp_titles = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Name--1o2Gg"})]
             temp_prices = [i.get_text() for i in soup.find_all("div", attrs={"class": "ProductCard-Price--1uInW"}) if not i.has_attr("data-dashed")]
+            temp_links = ["https://products.wholefoodsmarket.com" + i["href"] for i in soup.find_all("a", attrs={"class": "ProductCard-Root--3g5WI"})]
 
             images.append(temp_images)
             titles.append(temp_titles)
+            links.append(temp_links)
             prices.append(temp_prices)
 
         driver.close()
 
         images = [j for sub in images for j in sub]
         titles = [j for sub in titles for j in sub]
+        links = [j for sub in links for j in sub]
         prices = [j for sub in prices for j in sub]
 
-        for info_bunch in zip(images, titles, titles, prices):
-            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Whole Foods", formatted_title=info_bunch[2], price=info_bunch[3])
+        for info_bunch in zip(images, titles, titles, links, links, prices):
+            models.Product.objects.create(image_url=info_bunch[0], title=info_bunch[1], provider="Whole Foods", formatted_title=info_bunch[2], original_link=info_bunch[3], price=info_bunch[4])
 
 schedule.every(1).minutes.do(job)
 

@@ -132,6 +132,7 @@ if development:
         os.path.join(BASE_DIR, 'static'),
     ]
     STATIC_URL = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 else:
     AWS_DEFAULT_ACL = None
     AWS_ACCESS_KEY_ID = 'AKIAT2SKEKLO7J5HFM6W'

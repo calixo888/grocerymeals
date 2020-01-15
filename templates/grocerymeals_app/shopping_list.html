@@ -8,8 +8,8 @@
     <div class="shopping-list-container">
       {% for product in products %}
         <div class="product">
-          <img class="product-image" src="{{product.image_url}}" alt="{{product.title}} Image">
-          <span>Provider: {{product.provider}}</span>
+          <img style="width: 150px; display: block; text-align: center;" src="{% static 'img/stores/'%}{{product.provider}}.png" alt="">
+          <img class="w-100 h-100" src="{{product.image_url}}" alt="{{product.title}} Image">
           <a href="/products/product/{{product.id}}">{{product.formatted_title}}</a>
           <span>{{product.price}}</span>
           <a class="x" href="/shopping-list/delete-item/?id={{product.id}}">&times;</a>
