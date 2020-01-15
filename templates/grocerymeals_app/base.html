@@ -3,7 +3,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'grocerymeals_app/queries.css' %}">
     <link rel="stylesheet" href="{% static 'grocerymeals_app/base.css' %}">
@@ -22,7 +22,7 @@
 
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
               <img class="nav-logo" src="{% static 'img/logos/nav-grocerymeals.png' %}" alt="GroceryMeals Logo">
@@ -62,9 +62,11 @@
                       </div>
                     </li>
                     <li class="nav-item">
-                      <a href="/shopping-list/" class="nav-link shopping-list-nav-item">
-                        <img class="shopping-list pl-2" src="{% static 'img/icons/list-light.png'%}" alt="Shopping List Icon">
-                        <span class="item-number-badge">{{number_of_shopping_list_items}}</span>
+                      <a href="/shopping-list/" class="nav-link">
+                        <div class="shopping-list-nav-item">
+                          <img class="shopping-list pl-2" src="{% static 'img/icons/list-light.png'%}" alt="Shopping List Icon">
+                          <span class="item-number-badge">{{number_of_shopping_list_items}}</span>
+                        </div>
                       </a>
                     </li>
                   {% else %}

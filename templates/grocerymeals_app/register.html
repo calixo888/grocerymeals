@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'grocerymeals_app/register.css' %}">
 {% block body %}
   <h1 class="header-secondary f-50">Register</h1>
-  <div class="text-center my-5 text-white">
+  <div class="text-center my-5 text-white container">
     <form enctype="multipart/form-data" class="register-form m-auto" method="post">
       {% csrf_token %}
       <input type="text" name="name" class="register-input" placeholder="Full Name">

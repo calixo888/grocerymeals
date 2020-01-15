@@ -230,27 +230,27 @@ def product(request, product_id):
     item_id = search_data["hits"][0]["_id"]
 
     # Getting nutritional data with ID
-    nutrition_response = requests.get(f"https://api.nutritionix.com/v1_1/item?id={item_id}&appId=fdaac18d&appKey=fcb3a12ad912d0c76f9d1c703cd75d81")
-    nutrition_data = nutrition_response.json()
-
-    calories = nutrition_data["nf_calories"]
-    total_fat = nutrition_data["nf_total_fat"]
-    saturated_fat = nutrition_data["nf_saturated_fat"]
-    cholesterol = nutrition_data["nf_cholesterol"]
-    total_carbohydrate = nutrition_data["nf_total_carbohydrate"]
-    dietary_fiber = nutrition_data["nf_dietary_fiber"]
-    sugars = nutrition_data["nf_sugars"]
-    protein = nutrition_data["nf_protein"]
-
-    num_servings = nutrition_data["nf_serving_size_qty"]
-    serving_size = nutrition_data["nf_serving_weight_grams"]
-
-    allergens = []
-    potential_allergens = ["milk", "eggs", "fish", "shellfish", "tree_nuts", "peanuts", "wheat", "soybeans", "gluten"]
-    for allergen in potential_allergens:
-        contains = nutrition_data["allergen_contains_" + allergen]
-        if contains:
-            allergens.append(allergen)
+    # nutrition_response = requests.get(f"https://api.nutritionix.com/v1_1/item?id={item_id}&appId=fdaac18d&appKey=fcb3a12ad912d0c76f9d1c703cd75d81")
+    # nutrition_data = nutrition_response.json()
+    #
+    # calories = nutrition_data["nf_calories"]
+    # total_fat = nutrition_data["nf_total_fat"]
+    # saturated_fat = nutrition_data["nf_saturated_fat"]
+    # cholesterol = nutrition_data["nf_cholesterol"]
+    # total_carbohydrate = nutrition_data["nf_total_carbohydrate"]
+    # dietary_fiber = nutrition_data["nf_dietary_fiber"]
+    # sugars = nutrition_data["nf_sugars"]
+    # protein = nutrition_data["nf_protein"]
+    #
+    # num_servings = nutrition_data["nf_serving_size_qty"]
+    # serving_size = nutrition_data["nf_serving_weight_grams"]
+    #
+    # allergens = []
+    # potential_allergens = ["milk", "eggs", "fish", "shellfish", "tree_nuts", "peanuts", "wheat", "soybeans", "gluten"]
+    # for allergen in potential_allergens:
+    #     contains = nutrition_data["allergen_contains_" + allergen]
+    #     if contains:
+    #         allergens.append(allergen)
 
 
     # Grabbing recipes you can make with product
@@ -270,17 +270,17 @@ def product(request, product_id):
 
     return render(request, "grocerymeals_app/product.html", context={
         "product": product,
-        "calories": calories,
-        "total_fat": total_fat,
-        "saturated_fat": saturated_fat,
-        "cholesterol": cholesterol,
-        "total_carbohydrate": total_carbohydrate,
-        "dietary_fiber": dietary_fiber,
-        "sugars": sugars,
-        "protein": protein,
-        "num_servings": num_servings,
-        "serving_size": serving_size,
-        "allergens": allergens,
+        # "calories": calories,
+        # "total_fat": total_fat,
+        # "saturated_fat": saturated_fat,
+        # "cholesterol": cholesterol,
+        # "total_carbohydrate": total_carbohydrate,
+        # "dietary_fiber": dietary_fiber,
+        # "sugars": sugars,
+        # "protein": protein,
+        # "num_servings": num_servings,
+        # "serving_size": serving_size,
+        # "allergens": allergens,
         "recipes": recipes,
     })
 

@@ -18,6 +18,8 @@ body {
   background-repeat: no-repeat;
 
   min-height: 100vh;
+
+  overflow-x: hidden;
 }
 
 /* CONTAINER STYLES */
@@ -99,7 +101,7 @@ body {
 }
 
 .separator-right-dark {
-  border-right: 2px solid rgba(0,0,0,.5) !important;
+  border-right: 2px solid rgba(0,0,0,.5);
 }
 
 .prompt-item {
@@ -174,6 +176,7 @@ body {
 
 .shopping-list-nav-item {
   position: relative;
+  display: inline-block;
 }
 
 .item-number-badge {

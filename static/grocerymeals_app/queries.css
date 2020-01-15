@@ -1,12 +1,136 @@
 /* RECIPES PAGE */
 @media (max-width: 1000px) {
+
+}
+
+/* BASE.HTML */
+@media (max-width: 500px) {
+  .f-65 {
+    font-size: 50px !important;
+  }
+
+  .f-50 {
+    font-size: 40px !important;
+  }
+
+  .separator-right {
+    border: none !important;
+  }
+
+  .separator-right-dark {
+    border: none !important;
+  }
+
+  .prompt-item {
+    padding-left: 0 !important;
+  }
+}
+
+/* INDEX.HTML */
+@media (max-width: 500px) {
+  /* HEADER */
+  .center-container {
+    width: 75% !important;
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 50px 10px !important;
+  }
+
+  .about-cards {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  }
+
+  .about-main-description {
+    width: 100% !important;
+  }
+
+  /* STORES */
+  .stores-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+  }
+
+  /* SOCIAL MEDIA */
+  .social-media-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    grid-gap: 20px;
+  }
+
+  /* FOOTER */
+  .footer-grid {
+    justify-items: flex-start !important;
+    grid-gap: 50px !important;
+  }
+
+  .contact-link {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    grid-gap: 20px !important;
+  }
+}
+
+/* CONTACT_US.HTML */
+@media (max-width: 500px) {
+  .contact-us-form {
+    width: 100% !important;
+  }
+}
+
+/* PRODUCTS.HTML */
+@media (max-width: 500px) {
   .search-bar {
-    width: 90%;
-    margin: 50px auto !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    margin: 25px !important;
+  }
+
+  .search-bar-input {
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: 4px !important;
   }
 
   .search-bar-submit {
-    font-size: 15px !important;
-    content: "Find";
+    border-bottom-left-radius: 4px !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+
+/* LOGIN.HTML AND REGISTER.HTML */
+@media (max-width: 500px) {
+  .login-form {
+    width: 100% !important;
+  }
+
+  .register-form {
+    width: 100% !important;
+  }
+}
+
+/* RECIPE.HTML AND PRODUCT.HTML */
+@media (max-width: 500px) {
+  .recipe-image, .product-image {
+    width: 100%;
+  }
+
+  .recipe-container, .product-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    grid-gap: 0 !important;
+  }
+
+  .left {
+    text-align: center;
+  }
+}
+
+/* SHOPPING_LIST.HTML */
+@media (max-width: 500px) {
+  .product {
+    justify-items: center;
+  }
+
+  .x {
+    bottom: 0 !important;
+    right: 20px !important;
+    top: auto !important;
+    transform: none !important;
   }
 }
