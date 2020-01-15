@@ -9,6 +9,7 @@ body {
   grid-template-columns: 75% 25%;
   margin: 50px 75px;
   border-radius: 4px;
+  box-shadow: 0 3px 7.5px rgba(0,0,0,.15);
 }
 
 .search-bar *:focus, *:active {

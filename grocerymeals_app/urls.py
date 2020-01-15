@@ -5,6 +5,7 @@ urlpatterns = [
     url("^$", views.index, name="index"),
     url("^login/$", views.user_login, name="user_login"),
     url("^logout/$", views.user_logout, name="user_logout"),
+    url("^how-to-use-grocerymeals/$", views.how_to_use_grocerymeals, name="how_to_use_grocerymeals"),
     url("^register/$", views.register, name="register"),
     url("^contact-us/$", views.contact_us, name="contact_us"),
     url("^shopping-list/$", views.shopping_list, name="shopping_list"),

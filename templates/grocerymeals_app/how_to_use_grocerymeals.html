@@ -1,0 +1,42 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+  <title>GroceryMeals - How to use GroceryMeals</title>
+{% block body %}
+  <h1 class="header-secondary">How to use GroceryMeals</h1>
+  <div class="container mt-4 mb-5 text-white">
+    <p>
+      GroceryMeals is an online platform that gathers the best grocery prices and matches them with recipes you can make at home! We make it easy to find a well-priced product, find out what you can cook with it, and add it to your shopping list! Then, when you go shopping for your products, your shopping list is ready to be checked!
+    </p>
+    <h3 class="mt-4">How to use Grocerymeals</h3>
+    <p>
+      Using GroceryMeals is quite simple. Registration into our website is not required at all until you want to add items into your shopping list. Looking at products, recipes, and nutritional data can all be done without a single registration or login. If you haven't logged in and you try to add a product to your shopping list, you will be asked to login or register.
+    </p>
+    <p>
+      When searching through products, there are four options your can pick from with each product: View Original Product, View Product, Find Recipes, and Add to Shopping List.
+    </p>
+    <h5 class="mt-3">View Original Product</h5>
+    <p>
+      View Original Product is a link back to the original product on the website of the original grocery store brand. We add this to each product if the user wants to validate the price or the legitimacy of the product.
+    </p>
+    <h5 class="mt-3">View Product</h5>
+    <p>
+      View Product links to a separate page that isolates that specific product that displays nutritional data about that product and providing recipes you can make with it.
+    </p>
+    <h5 class="mt-3">Find Recipes</h5>
+    <p>
+      Find Recipes links to a page listing that displays a bunch of recipes that you can make with that product. We do this by searching through a stack of recipes in realtime and pull the recipes that include the product as an ingredient.
+    </p>
+    <h5 class="mt-3">Add to Shopping List</h5>
+    <p>
+      Add to Shopping List allows the user to add this product to their shopping list for future reference. Remember, you must login or register to add items to your shopping list.
+    </p>
+    <h3 class="mt-4">GroceryMeals Recipes</h3>
+    <p>
+      Our recipes use a service from SpoonacularAPI, and their website is linked <a href="https://spoonacular.com/food-api">here</a>. If finding recipes through the products was not specific enough, you can go to our <a href="/recipes/">recipes page</a> and find recipes with specific ingredients. You can even find recipes that have multiple ingredients, you just have to separate each ingredient with a space.
+    </p>
+    <h3 class="mt-4">GroceryMeals Prices</h3>
+    <p>
+      Our prices have been taken right from the product's respective grocer, and we have added a link back to the original product if you wanted to validate the price or purchase it online from that grocery store brand. We update our prices daily so we can ensure that the prices you're seeing are correct.
+    </p>
+  </div>
+{% endblock %}

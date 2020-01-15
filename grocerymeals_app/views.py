@@ -81,6 +81,10 @@ def user_logout(request):
     return HttpResponseRedirect("/")
 
 
+def how_to_use_grocerymeals(request):
+    return render(request, "grocerymeals_app/how_to_use_grocerymeals.html")
+
+
 def contact_us(request):
     if request.method == "POST":
         name = request.POST.get("name")

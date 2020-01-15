@@ -63,18 +63,17 @@
 
 .social-media-icons-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
-  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  grid-gap: 15px;
 }
 
 .social-media-icon {
   width: 100%;
-  transition: all .5s;
-  transition-timing-function: cubic-bezier(.49,.04,.32,.97);
+  transition: all .15s;
 }
 
 .social-media-icon:hover {
-  transform: rotate(360deg);
+  transform: scale(1.15);
 }
 
 .social-media-link:hover {
