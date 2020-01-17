@@ -7,11 +7,38 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from . import models
 import requests
+from django.shortcuts import render_to_response
+
+# ERROR PAGES
+def handler404(request, *args, **argv):
+    return render(request, "errors/404.html")
+
+def handler500(request, *args, **argv):
+    return render(request, "errors/500.html")
+
 
 def index(request):
     return render(request, "grocerymeals_app/index.html", context={
         "index": True,
     })
+
+
+def feedback(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        feedback = request.POST.get("feedback")
+
+        models.Feedback.objects.create(name=name, feedback=feedback)
+
+        email_string = F"\n\nFROM: {name}\nFEEDBACK: {feedback}"
+
+        EmailMessage("Testing Feedback", email_string, to=["calix.huang1@gmail.com"]).send()
+
+        messages.success(request, "Thank you for your feedback!")
+
+        return HttpResponseRedirect("/")
+
+    return render(request, "grocerymeals_app/feedback.html")
 
 
 def register(request):

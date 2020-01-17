@@ -38,6 +38,11 @@
                   <li class="nav-item">
                       <a class="nav-link" href="/contact-us/">Contact Us</a>
                   </li>
+                  {% if testing %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/feedback/">Feedback</a>
+                    </li>
+                  {% endif %}
                   <li class="nav-item">
                       <a class="nav-link" href="/products/">Products</a>
                   </li>
@@ -56,6 +61,7 @@
                           </div>
                           <div class="pt-3" style="border-top: 1px solid rgba(0,0,0,.5);">
                             <a class="user-link pt-3" href="/shopping-list/">View Shopping List ({{number_of_shopping_list_items}})</a>
+                            <br>
                             <a class="user-link" href="/logout/">Logout</a>
                           </div>
                         </div>

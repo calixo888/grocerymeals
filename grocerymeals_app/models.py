@@ -20,3 +20,12 @@ class ShoppingListItem(models.Model):
     def __str__(self):
         product = Product.objects.get(id=self.product_id)
         return product.title
+
+
+class Feedback(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=500)
+    feedback = models.TextField()
+
+    def __str__(self):
+        return self.name

@@ -1,0 +1,16 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+  <title>GroceryMeals - Internal Server Error</title>
+{% block body %}
+  <div class="container text-center text-white">
+    <h1 class="header-secondary">500 - Internal Server Error</h1>
+    <div class="w-50 m-auto">
+      <p class="mt-5">
+        We're sorry, but something went wrong with our internal servers. This is a technical error, and our developers are currently working on it. If the error continues to persist, please contact us <a href="/contact-us/">here</a>.
+      </p>
+      <p>
+        We're so sorry for the inconvenience.
+      </p>
+    </div>
+  </div>
+{% endblock %}

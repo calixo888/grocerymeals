@@ -21,6 +21,10 @@ from django.views.static import serve
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
+# 404 or 500
+handler404 = 'grocerymeals_app.views.handler404'
+handler500 = 'grocerymeals_app.views.handler500'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('', include('grocerymeals_app.urls')),

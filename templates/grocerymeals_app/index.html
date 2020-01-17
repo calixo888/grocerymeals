@@ -123,10 +123,53 @@
         <div class="about-container">
           <p class="footer-header">About GroceryMeals</p>
           <p>
-            GroceryMeals is a small tech startup started by Calix Huang, based in the East Bay Area, CA in the United States. This platform was built with HTML/CSS/Javascript, Python/Django, and other web frameworks such as jQuery and Bootstrap. GroceryMeals is hosted on Heroku/GitHub, using AWS technologies for storage and the DNS nameservers belong to Namecheap.
+            GroceryMeals is a small tech startup started by Calix Huang, based in the East Bay Area, CA in the United States. This platform is hosted on Heroku/GitHub, using AWS technologies for storage, and using DNS nameservers that belong to Namecheap.
           </p>
         </div>
       </div>
     </div>
   </section>
+
+  {% if testing %}
+    <div class="modal fade" id="feedback-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel">Feedback</h3>
+            <button class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <div class="modal-body">
+              <h5>Thank you so much for testing GroceryMeals!</h5>
+              <p>
+                GroceryMeals is currently configured in "testing mode". This means that only testers are using the website right now, and you are one of them! To make testing GroceryMeals more convenient for you to test, we have linked a page called "Feedback" in the navigation bar, and you can head over to that page and submit any feedback you may have for us, and any features you would love to see added. This is the first version of GroceryMeals, so there will be many bugs and inperfections. Please do let us know of all of them.
+              </p>
+              <p>
+                Again, you are a tester, so please check out <a href="/how-to-use-grocerymeals/">how to use GroceryMeals</a> if you have any trouble navigating the website. Please provide any feedback you have on those instructions if it's hard to read or not thorough enough, etc.
+              </p>
+              <p>Again, thank you so much for testing GroceryMeals!</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" charset="utf-8"></script>
+    <script>
+      function testimonialModal() {
+        setTimeout(function() {
+            $('#feedback-modal').modal("show");
+        }, 2000);
+      }
+      testimonialModal()
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+  {% endif %}
 {% endblock %}

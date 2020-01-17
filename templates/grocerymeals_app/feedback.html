@@ -1,0 +1,15 @@
+{% load staticfiles %}
+{% include 'grocerymeals_app/base.html' %}
+  <title>GroceryMeals - Feedback</title>
+  <link rel="stylesheet" href="{% static 'grocerymeals_app/contact_us.css' %}">
+{% block body %}
+  <h1 class="header-secondary f-50">Feedback</h1>
+  <div class="text-center mt-5 container">
+    <form enctype="multipart/form-data" class="contact-us-form m-auto" method="post">
+      {% csrf_token %}
+      <input type="text" name="name" class="contact-input" placeholder="Name">
+      <textarea name="feedback" rows="6" class="contact-input" placeholder="Message"></textarea>
+      <input class="ghost-cta-button btn-block" type="submit" value="Submit">
+    </form>
+  </div>
+{% endblock %}
