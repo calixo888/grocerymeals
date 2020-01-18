@@ -126,7 +126,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Testing mode
-TESTING = True
+TESTING = False
 
 # AWS Settings
 development = False
