@@ -9,6 +9,17 @@
     <link rel="stylesheet" href="{% static 'grocerymeals_app/base.css' %}">
     <link rel="icon" href="{% static 'img/logos/cut-grocerymeals.png'%}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152952409-3"></script>
@@ -97,12 +108,19 @@
     </nav>
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-info alert-dismissible mb-0 text-left fixed-top" style="z-index: 1040;">
-          <button class="close" type="button" data-dismiss="alert">
-              <span>&times;</span>
-          </button>
-          <strong>{{ message|escape }}</strong>
-        </div>
+        {% if message.tags == "success" %}
+          <script>
+            alertify.success("{{message}}");
+          </script>
+        {% elif message.tags == "error" %}
+          <script>
+            alertify.error("{{message}}");
+          </script>
+        {% elif message.tags == "warning" %}
+          <script>
+            alertify.warning("{{message}}");
+          </script>
+        {% endif %}
       {% endfor %}
     {% endif %}
     {% if not index %}
